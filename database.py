@@ -1,7 +1,9 @@
 import sqlite3
 import typing
 from utils import *
+from nutrition import Nutrition
 import string
+
 class Database():
 
     def __init__(self,db_path):
@@ -58,9 +60,17 @@ class Database():
             print('success')
 
     def get_data(self, food_name):
+        nutritions: typing.List[Nutrition] = list()
 
         self.c.execute(f"SELECT * FROM food where food_name LIKE '%{food_name}%'")
         self.conn.commit()
 
         rows = self.c.fetchall()
-        return rows
+
+        for n in rows:
+            nutritions.append(Nutrition(n))
+
+
+
+
+        return nutritions
